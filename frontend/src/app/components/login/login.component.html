@@ -1,0 +1,26 @@
+<div>
+<mat-card>
+  <mat-card-title>Увійти</mat-card-title>
+  <mat-card-content>
+    <form #logForm="ngForm" (ngSubmit)="submit()">
+      <mat-form-field appearance=legacy>
+        <mat-label>Електронна адреса</mat-label>
+        <label>
+          <input matInput placeholder="address@mail.net" required [(ngModel)]="user.username" name="username">
+        </label>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance=legacy>
+        <mat-label>Пароль</mat-label>
+        <label>
+          <input matInput required type="password" [(ngModel)]="user.password" name="password">
+        </label>
+      </mat-form-field>
+      <br>
+      <button mat-button type="submit" [disabled]="logForm.invalid">Увійти
+      </button>
+    </form>
+    <p>Гість? <a (click)="close()">Зареєструватись</a></p>
+  </mat-card-content>
+</mat-card>
+</div>

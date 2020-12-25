@@ -1,0 +1,63 @@
+<div>
+  <mat-card>
+    <mat-card-title>Реєстрація</mat-card-title>
+    <mat-card-content>
+      <form #regForm="ngForm" (ngSubmit)="submit()">
+        <mat-label>Вкажіть тип аккаунту:</mat-label>
+        <mat-radio-group required name="type" [(ngModel)]="selected" class="radio-group" (ngModelChange)="setValue()">
+          <mat-radio-button #client class="radio-button" value="{{roles[0]}}"><span>Клієнт</span></mat-radio-button>
+          <mat-radio-button #place class="radio-button" value="{{roles[1]}}"><span>Заклад</span></mat-radio-button>
+        </mat-radio-group>
+        <mat-form-field appearance=legacy>
+          <mat-label *ngIf="client.checked">Ім'я</mat-label>
+          <mat-label *ngIf="place.checked">Назва</mat-label>
+          <label>
+            <input matInput [placeholder]="client.checked ? 'Ім\'я користувача' : 'Назва закладу'" required
+                   [ngModel]="selected ? user.name : foodPlace.name" name="name"
+                   (ngModelChange)="selected ? (user.name = $event) : (foodPlace.name = $event)"
+                   [disabled]="selected.checked">
+          </label>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance=legacy>
+          <mat-label>Електронна адреса</mat-label>
+          <label>
+            <input matInput placeholder="address@mail.net" required
+                   [ngModel]="selected ? user.username : foodPlace.username" name="username"
+                   (ngModelChange)="selected ? (user.username = $event) : (foodPlace.username = $event)">
+          </label>
+        </mat-form-field>
+        <br>
+        <mat-form-field appearance=legacy>
+          <mat-label>Пароль</mat-label>
+          <label>
+            <input matInput required type="password" [ngModel]="selected ? user.password : foodPlace.password"
+                   name="password"
+                   (ngModelChange)="selected ? (user.password = $event) : (foodPlace.password = $event)">
+          </label>
+        </mat-form-field>
+        <br>
+        <mat-form-field *ngIf="client.checked">
+          <mat-label>Вкажіть стать</mat-label>
+          <mat-select [(ngModel)]="user.sex" name="sex" required>
+            <mat-option *ngFor="let sex of genders" value="{{sex.toUpperCase()}}">
+              {{sex}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field *ngIf="place.checked">
+          <mat-label>Вкажіть тип закладу</mat-label>
+          <mat-select [(ngModel)]="foodPlace.placeType" name="placeType" required>
+            <mat-option *ngFor="let type of types" value="{{type.toUpperCase()}}">
+              {{type}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+        <br>
+        <button mat-button type="submit" [disabled]="regForm.invalid">Реєстрація
+        </button>
+      </form>
+      <p>Наявний аккаунт? <a (click)="close()">Увійти</a></p>
+    </mat-card-content>
+  </mat-card>
+</div>

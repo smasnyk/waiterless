@@ -1,0 +1,17 @@
+mat-card {
+  min-width: 180px;
+  height: 250px;
+  text-align: justify;
+  border: rgba(63, 81, 181, 0.2) 1px solid;
+  cursor: pointer;
+  margin: 1% 2%;
+}
+
+mat-card:hover {
+  background-color: rgba(63, 81, 181, .4);
+}
+
+.mat-card:not([class*=mat-elevation-z]) {
+  box-shadow: none;
+  transition: background-color 1s ease;
+}
