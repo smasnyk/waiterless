@@ -22,6 +22,7 @@ public class PlaceController {
     PasswordEncoder passwordEncoder;
     OrderService orderService;
     ConverterService converterService;
+    FilterService filterService;
 
     @PostMapping("/signUp")
     public FoodPlace savePlace(@RequestBody FoodPlace place) {
@@ -72,5 +73,13 @@ public class PlaceController {
         List<Order> allByPlace = orderService.findAllByPlace(foodPlaceService.findById(id));
         converterService.convertDishKeys(allByPlace);
         return allByPlace;
+    }
+
+    @GetMapping("/{id}/stats")
+    public Map<String, Integer> getPlaceStats(@PathVariable int id, @RequestParam(required = false) String section,
+                                              @RequestParam(required = false) String date) {
+        List<Order> placeOrders = getPlaceOrders(id);
+        FoodPlace foodPlace = foodPlaceService.findById(id);
+        return filterService.getFilteredPlaceStats(foodPlace, section, date, placeOrders);
     }
 }

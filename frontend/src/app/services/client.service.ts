@@ -17,4 +17,12 @@ export class ClientService {
     let headers = new HttpHeaders().append('Authorization', token);
     return this.http.put<Client>(this.urlService.url + '/user/' + client.id + '/editUser', client, {headers});
   }
+
+  getStats(client: Client, place?: number): Observable<Object> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders().append('Authorization', token);
+    let params = new HttpParams();
+    if (place) params = params.set("place", String(place));
+    return this.http.get<Object>(this.urlService.url + '/user/' + client.id + '/stats', {params, headers});
+  }
 }

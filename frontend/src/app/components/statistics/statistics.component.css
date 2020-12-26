@@ -1,0 +1,23 @@
+table {
+  width: 50%;
+  margin: 0 auto;
+}
+
+div > div {
+  text-align: center;
+}
+
+td, th {
+  width: 60%;
+}
+
+span, mat-form-field {
+  margin: 0 1%;
+}
+
+#stat {
+  min-height: 446px;
+  padding: 3% 0;
+  margin: -2.5% 0;
+  background-color: rgba(63, 81, 181, .4);
+}

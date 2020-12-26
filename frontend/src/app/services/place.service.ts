@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
 import {UrlService} from "./url.service";
 import {FoodPlace} from "../models/food-place";
 import {Observable} from "rxjs";
@@ -37,5 +37,14 @@ export class PlaceService {
     const token = localStorage.getItem('token');
     let headers = new HttpHeaders().append('Authorization', token);
     return this.http.post<string[]>(this.urlService.url + '/place/' + place.id + '/addStatus', status, {headers});
+  }
+
+  getStats(place: FoodPlace, section?: string, date?: string): Observable<Object> {
+    const token = localStorage.getItem('token');
+    let headers = new HttpHeaders().append('Authorization', token);
+    let params = new HttpParams();
+    if (section) params = params.set("section", section);
+    if (date) params = params.set("date", date);
+    return this.http.get<Object>(this.urlService.url + '/place/' + place.id + '/stats', {params, headers});
   }
 }

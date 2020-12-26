@@ -20,12 +20,12 @@
         <div *ngSwitchCase="'ROLE_USER'">
           <button mat-menu-item routerLink="/user/{{user.id}}">Мій профіль</button>
           <button mat-menu-item routerLink="/user/{{user.id}}/orders" fragment="order">Замовлення</button>
-          <button mat-menu-item>Статистика</button>
+          <button mat-menu-item routerLink="/user/{{user.id}}/stats" fragment="stats">Статистика</button>
         </div>
         <div *ngSwitchCase="'ROLE_PLACE'">
           <button mat-menu-item routerLink="/place/{{user.id}}">Профіль закладу</button>
           <button mat-menu-item routerLink="/place/{{user.id}}/orders" fragment="order">Замовлення</button>
-          <button mat-menu-item>Статистика</button>
+          <button mat-menu-item routerLink="/place/{{user.id}}/stats" fragment="stats">Статистика</button>
         </div>
         <div *ngSwitchCase="'ROLE_ADMIN'">
           <button mat-menu-item routerLink="/admin/users">Список користувачів</button>
