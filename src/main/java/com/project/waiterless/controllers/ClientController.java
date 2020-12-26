@@ -36,4 +36,13 @@ public class ClientController {
         } else System.out.println("Something went wrong, Please try again.");
         return client;
     }
+
+    @PutMapping("/{id}/editUser")
+    public Client editClient(@PathVariable int id, @RequestBody Client client) {
+        Client byId = clientService.findById(id);
+        byId.setName(client.getName());
+        byId.setSex(client.getSex());
+        clientService.saveClient(byId);
+        return byId;
+    }
 }

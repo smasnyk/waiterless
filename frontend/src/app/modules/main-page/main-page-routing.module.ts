@@ -8,7 +8,9 @@ import {RegistrationComponent} from "../../components/registration/registration.
 const routes: Routes = [
   {path: '', component: MainPageComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegistrationComponent}
+  {path: 'register', component: RegistrationComponent},
+  {path: 'user/:id', loadChildren: () => import("../client/client.module").then(u => u.ClientModule)},
+  {path: 'admin/users', loadChildren: () => import("../admin/admin.module").then(a => a.AdminModule)}
 ];
 
 @NgModule({

@@ -13,7 +13,7 @@
       <mat-menu #menu="matMenu" [ngSwitch]="user.role">
         <p>{{user.name}}</p>
         <div *ngSwitchCase="'ROLE_USER'">
-          <button mat-menu-item>Мій профіль</button>
+          <button mat-menu-item routerLink="/user/{{user.id}}">Мій профіль</button>
           <button mat-menu-item>Замовлення</button>
           <button mat-menu-item>Статистика</button>
         </div>
@@ -23,7 +23,7 @@
           <button mat-menu-item>Статистика</button>
         </div>
         <div *ngSwitchCase="'ROLE_ADMIN'">
-          <button mat-menu-item>Список користувачів</button>
+          <button mat-menu-item routerLink="/admin/users">Список користувачів</button>
         </div>
         <button mat-menu-item (click)="logout()">Вийти</button>
       </mat-menu>

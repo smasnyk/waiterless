@@ -1,0 +1,43 @@
+<app-header></app-header>
+<div class="container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Інформація профілю</mat-card-title>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+      <div class="pic">
+      </div>
+      <div id="info" [ngClass]="{'w-70': user?.token != null}" *ngIf="!editable; else edit">
+        <div id="attr">
+          <span>Ім'я: </span>
+          <p>{{user?.name}}</p><br>
+          <span>Стать: </span>
+          <p>{{user?.sex | lowercase}}</p><br>
+          <span>Е-адреса: </span>
+          <p>{{user?.username}}</p><br>
+        </div>
+        <p *ngIf="user?.token != null">Профіль не активовано, будь ласка, перегляньте надіслані листи.</p>
+        <button mat-button (click)="editable = !editable">Редагувати профіль</button>
+      </div>
+      <ng-template #edit>
+        <form #editForm="ngForm" (ngSubmit)="editClient()">
+          <mat-form-field>
+            <label>
+              <input matInput required name="name" [(ngModel)]="user.name" [value]="user.name">
+            </label>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-select required [(ngModel)]="user.sex" [(value)]="user.sex" name="gender">
+              <mat-option *ngFor="let g of genders" value="{{g.toUpperCase()}}">{{g}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <br>
+          <button mat-button (click)="editable = !editable">X</button>
+          <button mat-button type="submit" [disabled]="editForm.invalid">Зберегти</button>
+        </form>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>
+<router-outlet></router-outlet>

@@ -1,0 +1,32 @@
+<app-header></app-header>
+<div class="container">
+  <mat-form-field>
+    <mat-label>Пошук користувача</mat-label>
+    <label>
+      <input matInput (keyup)="search($event)" placeholder="Напр. Петро">
+    </label>
+  </mat-form-field>
+  <div>
+    <table mat-table [dataSource]="dataSource" matSort>
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+        <td mat-cell *matCellDef="let user">{{user.id}}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ІМ'Я / НАЗВА</th>
+        <td mat-cell *matCellDef="let user">{{user.name}}</td>
+      </ng-container>
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>ЕЛЕКТРОННА ПОШТА</th>
+        <td mat-cell *matCellDef="let user">{{user.username}}</td>
+      </ng-container>
+      <ng-container matColumnDef="role">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>РОЛЬ</th>
+        <td mat-cell *matCellDef="let user">{{user.role}}</td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayed"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayed;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[10,25,50]" showFirstLastButtons></mat-paginator>
+  </div>
+</div>
