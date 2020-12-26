@@ -10,6 +10,7 @@ const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegistrationComponent},
   {path: 'user/:id', loadChildren: () => import("../client/client.module").then(u => u.ClientModule)},
+  {path: 'place/:id', loadChildren: () => import("../place/place.module").then(p => p.PlaceModule)},
   {path: 'admin/users', loadChildren: () => import("../admin/admin.module").then(a => a.AdminModule)}
 ];
 

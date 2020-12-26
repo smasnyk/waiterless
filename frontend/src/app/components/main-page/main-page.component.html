@@ -1,6 +1,6 @@
 <app-header></app-header>
 <div fxLayout="row wrap" class="container">
-  <mat-card *ngFor="let p of places">
+  <mat-card *ngFor="let p of places" routerLink="/place/{{p.id}}">
     <mat-card-header>
       <mat-card-title>{{p.name}}</mat-card-title>
       <mat-card-subtitle>{{p.placeType}}</mat-card-subtitle>

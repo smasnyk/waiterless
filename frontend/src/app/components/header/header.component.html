@@ -18,7 +18,7 @@
           <button mat-menu-item>Статистика</button>
         </div>
         <div *ngSwitchCase="'ROLE_PLACE'">
-          <button mat-menu-item>Профіль закладу</button>
+          <button mat-menu-item routerLink="/place/{{user.id}}">Профіль закладу</button>
           <button mat-menu-item>Замовлення</button>
           <button mat-menu-item>Статистика</button>
         </div>

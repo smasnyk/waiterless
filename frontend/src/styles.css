@@ -12,6 +12,10 @@ a {
   text-decoration: none;
 }
 
+mat-list > .mat-list-base .mat-list-item > .mat-list-item-content {
+  justify-content: center;
+}
+
 .span-space {
   flex: 1 1 auto;
 }

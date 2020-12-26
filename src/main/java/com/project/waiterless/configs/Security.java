@@ -43,7 +43,8 @@ public class Security extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.POST, "/**/signUp").permitAll()
-                .antMatchers(HttpMethod.GET, "/", "/user/{id}/activation/{confirmation}").permitAll()
+                .antMatchers(HttpMethod.GET, "/", "/user/{id}/activation/{confirmation}", "/place/{id}",
+                        "/place/{id}/dishes").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/place/**").hasRole("PLACE")

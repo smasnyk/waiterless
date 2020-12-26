@@ -1,0 +1,149 @@
+<app-header></app-header>
+<div class="rel cover">
+</div>
+<mat-card>
+  <mat-card-header>
+    <mat-card-title id="title">{{place?.name}}</mat-card-title>
+    <p><a
+      routerLink="/">Головна</a><span>&#707;</span><a
+      class="name">{{place?.placeType | titlecase}}</a><span>&#707;</span><a
+      class="name">{{place?.name}}</a>
+    </p>
+  </mat-card-header>
+  <div *ngIf="user != undefined; else undef" [ngClass]="{'one-block': menu.length === 0}">
+    <mat-card-content *ngIf="menu.length > 0">
+      <mat-list>
+        <ng-container *ngFor="let section of menu; let last = last">
+          <mat-list-item mat-subheader>{{section}}</mat-list-item>
+          <mat-list>
+            <ng-container *ngFor="let dish of dishes">
+              <mat-list-item mat-line *ngIf="dish.menuSection === section" class="dish">
+                <div>{{dish.dishTitle}}<span>{{dish.price}} &#x20B4;</span></div>
+              </mat-list-item>
+            </ng-container>
+          </mat-list>
+        </ng-container>
+      </mat-list>
+    </mat-card-content>
+    <mat-card-content [ngSwitch]="user.role">
+      <div *ngSwitchCase="'ROLE_USER'" [ngClass]="{'info': menu.length > 0}">
+        <ng-container *ngIf="menu.length > 0; else empty">
+        </ng-container>
+        <ng-template #empty><p class="report">Нам шкода! Схоже, меню ще не готове.</p></ng-template>
+      </div>
+      <div *ngSwitchCase="'ROLE_PLACE'" id="grid">
+        <ng-container *ngIf="owner; else other">
+          <button mat-button (click)="changeState(0)">Редагувати профіль</button>
+          <form #editForm="ngForm" (ngSubmit)="editPlace()" *ngIf="editable[0]">
+            <mat-form-field>
+              <label>
+                <input matInput required name="title" [(ngModel)]="place.name" [value]="place.name">
+              </label>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <mat-select name="type" required [(ngModel)]="place.placeType" [(value)]="place.placeType">
+                <mat-option *ngFor="let type of placeTypes" value="{{type.toUpperCase()}}">{{type}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
+            <button mat-button type="submit" [disabled]="editForm.invalid">Зберегти</button>
+          </form>
+          <button mat-button (click)="changeState(1)">Додати страву</button>
+          <form #dishForm="ngForm" (ngSubmit)="saveDish()" *ngIf="editable[1]">
+            <mat-form-field>
+              <label>
+                <input required matInput name="title" placeholder="Назва страви" [(ngModel)]="dish.dishTitle">
+              </label>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <label>
+                <input required type="number" step="1" min="1" value="0" matInput name="price" placeholder="Вартість"
+                       [(ngModel)]="dish.price">
+              </label>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <mat-label>Оберіть розділ меню</mat-label>
+              <mat-select [(ngModel)]="dish.menuSection" name="section" required>
+                <mat-option *ngFor="let section of menu" value="{{section}}">{{section}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
+            <button mat-button type="reset">X</button>
+            <button mat-button type="submit" [disabled]="dishForm.invalid">Зберегти</button>
+          </form>
+          <button mat-button (click)="changeState(2)">Редагувати страву</button>
+          <form #dishEditForm="ngForm" (ngSubmit)="editDish()" *ngIf="editable[2]">
+            <mat-form-field>
+              <mat-label>Вкажіть страву</mat-label>
+              <mat-select [(ngModel)]="editedDish" name="dish" required>
+                <mat-option *ngFor="let one of dishes" [value]="one">{{one.dishTitle}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="editedDish.dishId">
+              <label>
+                <input required matInput name="title" [value]="editedDish.dishTitle"
+                       [(ngModel)]="editedDish.dishTitle">
+              </label><br>
+            </mat-form-field>
+            <mat-form-field *ngIf="editedDish.dishTitle">
+              <label>
+                <input required type="number" step="1" min="1" matInput name="price" [value]="editedDish.price.toString()"
+                       [(ngModel)]="editedDish.price">
+              </label><br>
+            </mat-form-field>
+            <mat-form-field *ngIf="editedDish.price">
+              <mat-select [(ngModel)]="editedDish.menuSection" name="section" required
+                          [(value)]="editedDish.menuSection">
+                <mat-option *ngFor="let section of menu" value="{{section}}">{{section}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
+            <button mat-button type="submit" [disabled]="dishEditForm.invalid">Зберегти</button>
+          </form>
+          <button mat-button (click)="changeState(3)">Додати розділ меню</button>
+          <form #menuForm="ngForm" (ngSubmit)="addSection()" *ngIf="editable[3]">
+            <mat-form-field>
+              <mat-label>Оберіть розділ меню</mat-label>
+              <mat-select required [(ngModel)]="newSection[0]" name="type">
+                <mat-option *ngFor="let s of defaultSections"
+                            value="{{s.toString().toUpperCase().replace(' ', '_')}}">{{s}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+              <label>
+                <input matInput required name="name" placeholder="Назва" [(ngModel)]="newSection[1]">
+              </label>
+            </mat-form-field>
+            <br>
+            <button mat-button type="reset">X</button>
+            <button mat-button type="submit" [disabled]="menuForm.invalid">Зберегти</button>
+          </form>
+          <button mat-button (click)="changeState(4)">Додати статус замовлення</button>
+          <form #statusForm="ngForm" (ngSubmit)="addOrderStatus()" *ngIf="editable[4]">
+            <mat-form-field>
+              <label>
+                <input matInput required placeholder="Назва" [(ngModel)]="orderStatus" name="status">
+              </label>
+            </mat-form-field>
+            <br>
+            <button mat-button type="reset">X</button>
+            <button mat-button type="submit" [disabled]="statusForm.invalid">Зберегти</button>
+          </form>
+        </ng-container>
+        <ng-template #other>
+          <p class="report">Увійдіть з обліковим записом клієнта для оформлення замовлення.</p>
+        </ng-template>
+      </div>
+      <div *ngSwitchDefault>
+        <p class="report">Увійдіть з обліковим записом клієнта для оформлення замовлення.</p>
+      </div>
+    </mat-card-content>
+  </div>
+  <ng-template #undef><p class="report">Зареєструйтеся або увійдіть, щоб переглянути меню закладу та замовити.</p>
+  </ng-template>
+</mat-card>
+<router-outlet></router-outlet>
