@@ -1,0 +1,77 @@
+<h2>Меню «{{data.place.name}}»</h2>
+<mat-dialog-content>
+  <mat-horizontal-stepper linear #stepper>
+    <mat-step label="Оберіть страви" editable="false" [completed]="false" #first>
+      <mat-list>
+        <ng-container *ngFor="let section of menu; let last = last">
+          <mat-list-item mat-subheader>{{section}}</mat-list-item>
+          <mat-list>
+            <ng-container *ngFor="let dish of dishes">
+              <mat-list-item mat-line *ngIf="dish.menuSection === section">
+                <span>{{dish.dishTitle}}</span>
+                <div class="span-space">
+                  <button mat-button (click)="handleMinus(dish.dishId.toString())">-</button>
+                  <mat-form-field>
+                    <label>
+                      <input matInput type="number" step="1" min="0"
+                             value="0" [ngModel]="values?.get(dish.dishId.toString())"
+                             (ngModelChange)="values.set(dish.dishId.toString(), $event)">
+                    </label>
+                  </mat-form-field>
+                  <button mat-button (click)="handlePlus(dish.dishId.toString())">+</button>
+                </div>
+                <span id="price">{{dish.price}}&#x20B4;</span>
+              </mat-list-item>
+            </ng-container>
+          </mat-list>
+          <mat-divider *ngIf="!last"></mat-divider>
+        </ng-container>
+      </mat-list>
+    </mat-step>
+    <mat-step label="Оплата" editable="false" [completed]="false">
+      <div>
+        <p>Вартість замовлення становить <b>{{order.totalPrice}}&#x20B4;</b>. Для здійснення оплати введіть необхідні
+          дані та натисніть кнопку нижче:</p>
+        <form #payment="ngForm">
+          <mat-card>
+            <mat-form-field>
+              <mat-label>Номер картки</mat-label>
+              <label>
+                <input matInput type="tel" name="cardNumber" autocomplete="off" maxlength="20" [(ngModel)]="cardNumber"
+                       required
+                       (keyup)="setSpace()" pattern="\s?[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}\s?[0-9]{4}">
+              </label>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Термін дії</mat-label>
+              <label>
+                <input matInput [matDatepicker]="picker" [formControl]="date" required name="expiryDate"
+                       [min]="minDate">
+              </label>
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker startView="multi-year" (yearSelected)="handleYear($event)"
+                              (monthSelected)="handleMonth($event)" #picker disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>CVV</mat-label>
+              <label>
+                <input matInput type="password" maxlength="3" ngModel pattern="[0-9]{3}" name="cvv" required>
+              </label>
+            </mat-form-field>
+          </mat-card>
+          <button mat-button [disabled]="payment.invalid" (click)="nextStep()">Сплатити</button>
+        </form>
+      </div>
+    </mat-step>
+    <mat-step label="Готово">
+      <div id="lastStep" *ngIf="shown">
+        <mat-spinner id="spinner"></mat-spinner>
+        <p>Оплата пройшла успішно, дякуємо за замовлення!</p>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-dialog-content>
+<mat-dialog-actions *ngIf="shown">
+  <button mat-button mat-dialog-close>Закрити</button>
+  <button mat-button (click)="makeOrder()" *ngIf="!first.completed">Оформити замовлення</button>
+</mat-dialog-actions>

@@ -1,0 +1,23 @@
+mat-accordion {
+  width: 75%;
+  display: block;
+  margin: 0 auto;
+}
+
+span {
+  font-weight: 500;
+}
+
+p {
+  display: inline;
+}
+
+span p {
+  font-size: larger;
+}
+
+#order {
+  padding: 5% 0;
+  margin: -2.5% 0;
+  background-color: rgba(63, 81, 181, .4);
+}

@@ -17,4 +17,8 @@ export class EventService {
   onRegClick() {
     this.openFunction.emit();
   }
+
+  setUser(user: User) {
+    this.subject.next(user);
+  }
 }

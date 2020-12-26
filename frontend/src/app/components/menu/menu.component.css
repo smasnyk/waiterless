@@ -1,0 +1,97 @@
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+mat-form-field {
+  width: 40px;
+  text-align: center;
+}
+
+div {
+  margin: 0 25px;
+  text-align: center;
+}
+
+mat-card {
+  width: 70%;
+  margin: 0 auto;
+}
+
+mat-card > mat-form-field {
+  width: auto;
+}
+
+span {
+  width: 100px;
+}
+
+form > button {
+  margin-top: 2%;
+}
+
+mat-dialog-container {
+  min-height: 400px;
+}
+
+mat-dialog-content {
+  width: 600px;
+  min-height: 350px;
+}
+
+mat-list-item {
+  height: 40px;
+}
+
+.mat-dialog-actions {
+  justify-content: space-between;
+}
+
+.mat-list-base {
+  padding-top: 0;
+}
+
+#price {
+  text-align: end;
+  font-weight: bold;
+}
+
+#lastStep {
+  display: flex;
+  justify-content: center;
+  padding-top: 10%;
+}
+
+#lastStep > p {
+  animation: showUp 0s 6s forwards;
+  visibility: hidden;
+  width: 0;
+}
+
+@keyframes showUp {
+  to {
+    visibility: visible;
+    width: auto;
+  }
+}
+
+#spinner {
+  -moz-animation: cssAnimation 0s ease-in 5s forwards;
+  -webkit-animation: cssAnimation 0s ease-in 5s forwards;
+  -o-animation: cssAnimation 0s ease-in 5s forwards;
+  animation: cssAnimation 0s ease-in 5s forwards;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+}
+
+@keyframes cssAnimation {
+  to {
+    width: 0;
+    height: 0;
+    visibility: hidden;
+  }
+}

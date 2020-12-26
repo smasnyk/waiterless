@@ -14,12 +14,12 @@
         <p>{{user.name}}</p>
         <div *ngSwitchCase="'ROLE_USER'">
           <button mat-menu-item routerLink="/user/{{user.id}}">Мій профіль</button>
-          <button mat-menu-item>Замовлення</button>
+          <button mat-menu-item routerLink="/user/{{user.id}}/orders" fragment="order">Замовлення</button>
           <button mat-menu-item>Статистика</button>
         </div>
         <div *ngSwitchCase="'ROLE_PLACE'">
           <button mat-menu-item routerLink="/place/{{user.id}}">Профіль закладу</button>
-          <button mat-menu-item>Замовлення</button>
+          <button mat-menu-item routerLink="/place/{{user.id}}/orders" fragment="order">Замовлення</button>
           <button mat-menu-item>Статистика</button>
         </div>
         <div *ngSwitchCase="'ROLE_ADMIN'">

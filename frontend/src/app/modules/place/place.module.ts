@@ -7,14 +7,21 @@ import {MainPageModule} from "../main-page/main-page.module";
 import {MatListModule} from "@angular/material/list";
 import {MatSelectModule} from "@angular/material/select";
 import {MatButtonModule} from "@angular/material/button";
-import {FormsModule} from "@angular/forms";
+import {MenuComponent} from "../../components/menu/menu.component";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatDialogModule} from "@angular/material/dialog";
 import {MatInputModule} from "@angular/material/input";
 import {MatCardModule} from "@angular/material/card";
+import {MatStepperModule} from "@angular/material/stepper";
+import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
+import {MatDatepickerModule} from "@angular/material/datepicker";
+import {MatNativeDateModule} from "@angular/material/core";
 
 
 @NgModule({
   declarations: [
-    PlaceComponent
+    PlaceComponent,
+    MenuComponent
   ],
     imports: [
         CommonModule,
@@ -24,9 +31,17 @@ import {MatCardModule} from "@angular/material/card";
         MatSelectModule,
         MatButtonModule,
         FormsModule,
+        MatDialogModule,
         MatInputModule,
-        MatCardModule
-    ]
+        MatCardModule,
+        MatStepperModule,
+        MatProgressSpinnerModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        ReactiveFormsModule
+    ],
+  providers: [MatDatepickerModule],
+  entryComponents: [MenuComponent]
 })
 export class PlaceModule {
 }

@@ -4,6 +4,7 @@ import com.project.waiterless.enums.MenuSection;
 import com.project.waiterless.enums.OrderStatus;
 import com.project.waiterless.enums.Role;
 import com.project.waiterless.models.FoodPlace;
+import com.project.waiterless.models.Order;
 import com.project.waiterless.services.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,6 +20,8 @@ import java.util.Map;
 public class PlaceController {
     FoodPlaceService foodPlaceService;
     PasswordEncoder passwordEncoder;
+    OrderService orderService;
+    ConverterService converterService;
 
     @PostMapping("/signUp")
     public FoodPlace savePlace(@RequestBody FoodPlace place) {
@@ -62,5 +65,12 @@ public class PlaceController {
         sections.putAll(menuSections);
         foodPlaceService.savePlace(place);
         return sections;
+    }
+
+    @GetMapping("/{id}/orders")
+    public List<Order> getPlaceOrders(@PathVariable int id) {
+        List<Order> allByPlace = orderService.findAllByPlace(foodPlaceService.findById(id));
+        converterService.convertDishKeys(allByPlace);
+        return allByPlace;
     }
 }

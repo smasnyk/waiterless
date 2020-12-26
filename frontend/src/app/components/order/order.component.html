@@ -1,0 +1,32 @@
+<div id="order">
+  <mat-accordion>
+    <mat-expansion-panel *ngFor="let order of orders; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Замовлення №{{i + 1 < 10 ? '0' + (i + 1) : i + 1}}</mat-panel-title>
+        <mat-panel-description>{{order.orderDate | date}}</mat-panel-description>
+      </mat-expansion-panel-header>
+      <ng-container *ngIf="user.role === roles[0].toString()">
+        <span>Назва закладу: </span>
+        <p>{{order.place.name}}</p><br>
+      </ng-container>
+      <span>Статус замовлення: </span>
+      <p>{{order.orderStatus.replace('_', ' ') | titlecase}}</p><br>
+      <span>Сума замовлення: </span>
+      <p>{{order.totalPrice}}&#x20B4;</p><br>
+      <span>Перелік страв: </span>
+      <p *ngFor="let dish of order.dishes | keyvalue; let last = last">{{dish.key}}
+        x {{dish.value}}{{last ? '' : ', '}}</p><br>
+      <ng-container *ngIf="user.role === roles[1].toString()">
+        <ng-container *ngIf="order.orderStatus != statuses[1]">
+        <mat-form-field>
+          <mat-select required [(ngModel)]="order.orderStatus" name="status" [(value)]="order.orderStatus">
+            <mat-option *ngFor="let status of place.orderStatuses"
+                        value="{{status}}">{{status.replace('_', ' ') | titlecase}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        </ng-container>
+        <button mat-button (click)="editOrderStatus(order)">Зберегти</button>
+      </ng-container>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

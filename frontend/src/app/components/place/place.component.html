@@ -28,6 +28,7 @@
     <mat-card-content [ngSwitch]="user.role">
       <div *ngSwitchCase="'ROLE_USER'" [ngClass]="{'info': menu.length > 0}">
         <ng-container *ngIf="menu.length > 0; else empty">
+          <button mat-button (click)="openMenu()">Зробити замовлення</button>
         </ng-container>
         <ng-template #empty><p class="report">Нам шкода! Схоже, меню ще не готове.</p></ng-template>
       </div>

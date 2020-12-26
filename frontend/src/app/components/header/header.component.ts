@@ -26,6 +26,7 @@ export class HeaderComponent implements OnInit {
     if (localStorage.getItem('token') != null) this.loginService.getUser().subscribe((value => this.user = value));
     this.loggedIn = localStorage.getItem('token');
     if (this.eventEmitter.subVar == undefined) this.eventEmitter.subVar = this.eventEmitter.openFunction.subscribe(() => this.openReg());
+    setTimeout(() => this.eventEmitter.setUser(this.user), 200);
   }
 
   openReg() {

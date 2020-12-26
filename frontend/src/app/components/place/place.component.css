@@ -104,6 +104,27 @@ input[type=number] {
   display: table-cell;
 }
 
+.info {
+  width: 300px;
+  position: sticky;
+  top: 120px;
+  display: block;
+  border-radius: 5%;
+  margin: 0 auto;
+  line-height: 220px;
+  background-image: url(src/assets/images/order.jpg);
+  background-size: cover;
+  background-position: center;
+  filter: grayscale(1);
+}
+
+.info > button {
+  background: rgba(0, 0, 0, .7);
+  border-radius: 0;
+  color: white;
+  font-weight: 400;
+}
+
 .name {
   cursor: initial;
   color: rgba(0, 0, 0, .87);

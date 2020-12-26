@@ -8,6 +8,8 @@ import {Dish} from "../../models/dish";
 import {DishService} from "../../services/dish.service";
 import {MenuSection} from "../../models/enums/menu-section";
 import {PlaceType} from "../../models/enums/place-type";
+import {MenuComponent} from "../menu/menu.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-place',
@@ -31,7 +33,8 @@ export class PlaceComponent implements OnInit {
   constructor(public activatedRoute: ActivatedRoute,
               public placeService: PlaceService,
               public loginService: LoginService,
-              public dishService: DishService) {
+              public dishService: DishService,
+              public dialog: MatDialog) {
   }
 
   ngOnInit() {
@@ -56,6 +59,10 @@ export class PlaceComponent implements OnInit {
       }, 500);
       return this.owner;
     }
+  }
+
+  openMenu() {
+    this.dialog.open(MenuComponent, {data: {place: this.place, user: this.user}, disableClose: true});
   }
 
   changeState(i: number) {
