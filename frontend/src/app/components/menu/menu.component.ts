@@ -12,6 +12,7 @@ import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/
 import * as _moment from 'moment';
 import {default as _rollupMoment, Moment} from 'moment';
 import {MatDatepicker} from "@angular/material/datepicker";
+import {WebSocketService} from "../../services/web-socket.service";
 
 const moment = _rollupMoment || _moment;
 
@@ -54,7 +55,8 @@ export class MenuComponent implements OnInit {
   constructor(@Inject(MAT_DIALOG_DATA) public data,
               public dishService: DishService,
               public orderService: OrderService,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              public socketService: WebSocketService) {
   }
 
   ngOnInit() {
@@ -75,11 +77,19 @@ export class MenuComponent implements OnInit {
       this.order.dishes[key] = value;
     if (Object.keys(this.order.dishes).length > 0) {
       this.orderService.saveOrder(this.data.user, this.data.place, this.order).subscribe(value => this.order = value);
+      this.notify(this.data.place.id, 'new order');
       this.nextStep();
     } else this.snackBar.open('Перелік страв замовлення порожній!', 'Ок', {
       duration: 1000,
       panelClass: ['white-snackbar']
     });
+  }
+
+  notify(id: number, message: string) {
+    let stompClient = this.socketService.connect();
+    stompClient.connect({}, () => {
+      stompClient.send('/app/notification/' + id, {}, JSON.stringify(message));
+    })
   }
 
   handlePlus(i: string) {

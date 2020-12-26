@@ -7,6 +7,11 @@
       <button mat-button (click)="openLogin()">Увійти</button>
     </div>
     <div *ngIf="loggedIn != null && user">
+      <button [matBadge]="notifications.toString()" [matBadgeHidden]="notifications === 0" matBadgeSize="small"
+              mat-button *ngIf="user.role === 'ROLE_PLACE'" (click)="orders()"
+              matTooltip="Нові замовлення" routerLink="/place/{{user.id}}/orders" fragment="order">
+        <mat-icon>notifications_none</mat-icon>
+      </button>
       <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>menu</mat-icon>
       </button>
