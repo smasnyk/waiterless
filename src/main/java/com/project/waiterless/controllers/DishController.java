@@ -3,9 +3,12 @@ package com.project.waiterless.controllers;
 import com.project.waiterless.models.Dish;
 import com.project.waiterless.services.DishService;
 import com.project.waiterless.services.FoodPlaceService;
+import com.project.waiterless.services.ImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -13,6 +16,7 @@ import java.util.List;
 public class DishController {
     FoodPlaceService placeService;
     DishService dishService;
+    ImageService imageService;
 
     @PostMapping("/place/{placeId}/addDish")
     public Dish saveDish(@PathVariable int placeId, @RequestBody Dish dish) {
@@ -39,5 +43,13 @@ public class DishController {
     @GetMapping("/place/{id}/dishes")
     public List<Dish> getDishes(@PathVariable int id) {
         return dishService.findAllByPlace(placeService.findById(id));
+    }
+
+    @PutMapping("/dish/{id}/addPhoto")
+    public void setPicture(@PathVariable int id, @RequestParam("file") MultipartFile file) throws IOException {
+        Dish dish = dishService.findById(id);
+        dish.setPicture(file.getOriginalFilename());
+        imageService.storeFile(file);
+        dishService.saveDish(dish);
     }
 }

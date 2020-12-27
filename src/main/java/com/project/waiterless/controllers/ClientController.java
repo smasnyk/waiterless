@@ -8,7 +8,9 @@ import com.project.waiterless.services.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -24,6 +26,7 @@ public class ClientController {
     ConverterService converterService;
     FilterService filterService;
     FoodPlaceService placeService;
+    ImageService imageService;
 
     @PostMapping("/signUp")
     public Client saveClient(@RequestBody Client client) {
@@ -68,5 +71,13 @@ public class ClientController {
         FoodPlace foodPlace = null;
         if (place != null) foodPlace = placeService.findById(Integer.parseInt(place));
         return filterService.getFilteredClientStats(client, foodPlace, clientOrders);
+    }
+
+    @PutMapping("/{id}/addPhoto")
+    public void setPicture(@PathVariable int id, @RequestParam("file") MultipartFile file) throws IOException {
+        Client client = clientService.findById(id);
+        client.setPicture(file.getOriginalFilename());
+        clientService.saveClient(client);
+        imageService.storeFile(file);
     }
 }

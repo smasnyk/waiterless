@@ -14,6 +14,10 @@ mat-card-content {
   font-size: x-large;
 }
 
+mat-card-content > div > input {
+  display: none;
+}
+
 .mat-card .mat-divider-horizontal {
   width: 94%;
   margin: 0 3%;
@@ -49,9 +53,27 @@ span, p {
   border-bottom: 1px solid rgba(63, 81, 181, .4);
 }
 
+mat-icon {
+  color: rgba(63, 81, 181, .7);
+}
+
+img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
 div.container {
   display: flex;
   margin-bottom: 5%;
+}
+
+.mat-mini-fab {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: white;
 }
 
 .w-70 {

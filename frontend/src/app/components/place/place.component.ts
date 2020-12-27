@@ -10,6 +10,8 @@ import {MenuSection} from "../../models/enums/menu-section";
 import {PlaceType} from "../../models/enums/place-type";
 import {MenuComponent} from "../menu/menu.component";
 import {MatDialog} from "@angular/material/dialog";
+import {ImageService} from "../../services/image.service";
+import {UuidService} from "../../services/uuid.service";
 
 @Component({
   selector: 'app-place',
@@ -21,7 +23,7 @@ export class PlaceComponent implements OnInit {
   user: User;
   orderStatus: string;
   owner: boolean = false;
-  editable: boolean[] = new Array(5);
+  editable: boolean[] = new Array(6);
   newSection: string[] = new Array(2);
   defaultSections = Object.values(MenuSection);
   placeTypes = Object.keys(PlaceType);
@@ -29,12 +31,15 @@ export class PlaceComponent implements OnInit {
   dishes: Dish[] = [];
   dish: Dish = new Dish();
   editedDish: Dish = {};
+  file: File;
 
   constructor(public activatedRoute: ActivatedRoute,
               public placeService: PlaceService,
               public loginService: LoginService,
               public dishService: DishService,
-              public dialog: MatDialog) {
+              public dialog: MatDialog,
+              public uuidService: UuidService,
+              public imageService: ImageService) {
   }
 
   ngOnInit() {
@@ -95,6 +100,24 @@ export class PlaceComponent implements OnInit {
 
   addOrderStatus() {
     this.placeService.addOrderStatus(this.place, this.orderStatus).subscribe();
+    this.reload();
+  }
+
+  onPicUpload(event) {
+    this.file = event.target.files[0];
+    if (this.file != null) {
+      this.place.picture = this.uuidService.generateName(this.file);
+      this.imageService.setPlacePicture(this.file, this.place, this.place.picture).subscribe();
+    }
+    this.reload();
+  }
+
+  onDishSave(event) {
+    this.file = event.target.files[0];
+    if (this.file != null) {
+      this.editedDish.picture = this.uuidService.generateName(this.file);
+      this.imageService.setDishPicture(this.file, this.editedDish, this.editedDish.picture).subscribe();
+    }
     this.reload();
   }
 

@@ -9,7 +9,9 @@ import com.project.waiterless.services.*;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +25,7 @@ public class PlaceController {
     OrderService orderService;
     ConverterService converterService;
     FilterService filterService;
+    ImageService imageService;
 
     @PostMapping("/signUp")
     public FoodPlace savePlace(@RequestBody FoodPlace place) {
@@ -81,5 +84,13 @@ public class PlaceController {
         List<Order> placeOrders = getPlaceOrders(id);
         FoodPlace foodPlace = foodPlaceService.findById(id);
         return filterService.getFilteredPlaceStats(foodPlace, section, date, placeOrders);
+    }
+
+    @PutMapping("/{id}/addPhoto")
+    public void setPicture(@PathVariable int id, @RequestParam("file") MultipartFile file) throws IOException {
+        FoodPlace place = foodPlaceService.findById(id);
+        place.setPicture(file.getOriginalFilename());
+        imageService.storeFile(file);
+        foodPlaceService.savePlace(place);
     }
 }

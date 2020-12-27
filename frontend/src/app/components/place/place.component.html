@@ -1,7 +1,17 @@
 <app-header></app-header>
-<div class="rel cover">
+<div class="rel cover" *ngIf="place?.picture != null; else pic">
+  <img [src]="placeService.urlService.url+'/images/'+place.picture" alt="picture">
 </div>
+<ng-template #pic>
+  <div *ngIf="place != undefined" class="cover">
+    <img src="assets/images/cover.png" alt="picture">
+  </div>
+</ng-template>
 <mat-card>
+  <input type="file" #file (change)="onPicUpload($event)">
+  <button mat-mini-fab (click)="file.click()" *ngIf="owner">
+    <mat-icon>create</mat-icon>
+  </button>
   <mat-card-header>
     <mat-card-title id="title">{{place?.name}}</mat-card-title>
     <p><a
@@ -17,7 +27,9 @@
           <mat-list-item mat-subheader>{{section}}</mat-list-item>
           <mat-list>
             <ng-container *ngFor="let dish of dishes">
-              <mat-list-item mat-line *ngIf="dish.menuSection === section" class="dish">
+              <mat-list-item mat-line *ngIf="dish.menuSection === section" class="dish"
+                             [ngStyle]="{'background': dish.picture!=null ? 'url('+placeService.urlService.url+'/images/'+dish.picture+') ' +
+                              'no-repeat center' : '#3f51b5', 'background-size':'cover'}">
                 <div>{{dish.dishTitle}}<span>{{dish.price}} &#x20B4;</span></div>
               </mat-list-item>
             </ng-container>
@@ -75,8 +87,20 @@
             <button mat-button type="reset">X</button>
             <button mat-button type="submit" [disabled]="dishForm.invalid">Зберегти</button>
           </form>
-          <button mat-button (click)="changeState(2)">Редагувати страву</button>
-          <form #dishEditForm="ngForm" (ngSubmit)="editDish()" *ngIf="editable[2]">
+          <button mat-button (click)="changeState(2)">Завантажити фото страви</button>
+          <div *ngIf="editable[2]">
+            <mat-form-field>
+              <mat-label>Вкажіть страву</mat-label>
+              <mat-select [(ngModel)]="editedDish" name="dish" required>
+                <mat-option *ngFor="let one of dishes" [value]="one">{{one.dishTitle}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <br>
+            <input type="file" #file (change)="onDishSave($event)">
+            <button mat-button (click)="file.click()">Завантажити</button>
+          </div>
+          <button mat-button (click)="changeState(3)">Редагувати страву</button>
+          <form #dishEditForm="ngForm" (ngSubmit)="editDish()" *ngIf="editable[3]">
             <mat-form-field>
               <mat-label>Вкажіть страву</mat-label>
               <mat-select [(ngModel)]="editedDish" name="dish" required>
@@ -91,7 +115,8 @@
             </mat-form-field>
             <mat-form-field *ngIf="editedDish.dishTitle">
               <label>
-                <input required type="number" step="1" min="1" matInput name="price" [value]="editedDish.price.toString()"
+                <input required type="number" step="1" min="1" matInput name="price"
+                       [value]="editedDish.price.toString()"
                        [(ngModel)]="editedDish.price">
               </label><br>
             </mat-form-field>
@@ -104,8 +129,8 @@
             <br>
             <button mat-button type="submit" [disabled]="dishEditForm.invalid">Зберегти</button>
           </form>
-          <button mat-button (click)="changeState(3)">Додати розділ меню</button>
-          <form #menuForm="ngForm" (ngSubmit)="addSection()" *ngIf="editable[3]">
+          <button mat-button (click)="changeState(4)">Додати розділ меню</button>
+          <form #menuForm="ngForm" (ngSubmit)="addSection()" *ngIf="editable[4]">
             <mat-form-field>
               <mat-label>Оберіть розділ меню</mat-label>
               <mat-select required [(ngModel)]="newSection[0]" name="type">
@@ -123,8 +148,8 @@
             <button mat-button type="reset">X</button>
             <button mat-button type="submit" [disabled]="menuForm.invalid">Зберегти</button>
           </form>
-          <button mat-button (click)="changeState(4)">Додати статус замовлення</button>
-          <form #statusForm="ngForm" (ngSubmit)="addOrderStatus()" *ngIf="editable[4]">
+          <button mat-button (click)="changeState(5)">Додати статус замовлення</button>
+          <form #statusForm="ngForm" (ngSubmit)="addOrderStatus()" *ngIf="editable[5]">
             <mat-form-field>
               <label>
                 <input matInput required placeholder="Назва" [(ngModel)]="orderStatus" name="status">

@@ -16,6 +16,7 @@ import {MatStepperModule} from "@angular/material/stepper";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from "@angular/material/core";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -23,23 +24,24 @@ import {MatNativeDateModule} from "@angular/material/core";
     PlaceComponent,
     MenuComponent
   ],
-    imports: [
-        CommonModule,
-        PlaceRoutingModule,
-        MainPageModule,
-        MatListModule,
-        MatSelectModule,
-        MatButtonModule,
-        FormsModule,
-        MatDialogModule,
-        MatInputModule,
-        MatCardModule,
-        MatStepperModule,
-        MatProgressSpinnerModule,
-        MatDatepickerModule,
-        MatNativeDateModule,
-        ReactiveFormsModule
-    ],
+  imports: [
+    CommonModule,
+    PlaceRoutingModule,
+    MainPageModule,
+    MatListModule,
+    MatSelectModule,
+    MatButtonModule,
+    FormsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatCardModule,
+    MatStepperModule,
+    MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    ReactiveFormsModule,
+    MatIconModule
+  ],
   providers: [MatDatepickerModule],
   entryComponents: [MenuComponent]
 })
